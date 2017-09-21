@@ -6,7 +6,6 @@
 #define WMS_FRAME_POS_X 1280
 #define WMS_FRAME_POS_Y 720
 
-
 enum wxEventID
 {
 	wxID_LOGIN = 0,
@@ -27,4 +26,16 @@ enum wxEventID
 
 
 	wxWinID_TOOLBAR = 500,
+	wxWinID_LISTINVENTORY,
+	wxWinID_LOGIN_NAME,
+	wxWinID_LOGIN_PWD,
+	wxWinID_LOGIN_OPEATOR
+};
+
+enum eFrameType
+{
+	eLoginFrame = 0,
+	eInBoundFrame,
+	eOutBoundFrame,
+	eQueryFrame,
 };

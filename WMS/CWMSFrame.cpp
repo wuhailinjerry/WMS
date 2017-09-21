@@ -1,20 +1,28 @@
 #include "stdafx.h"
 #include "CWMSFrame.h"
 
-#include "WMSDefine.h"
+#include "CWMSInventoryList.h"
 
 #include "Resource/WMS.xpm"
 
 #include "Resource/inbound.xpm"
 #include "Resource/outbound.xpm"
 #include "Resource/stocktaking.xpm"
+#include "Resource/find.xpm"
 #include "Resource/help.xpm"
+
+#include "CLoginFrame.h"
+#include "CInBoundFrame.h"
+#include "COutBoundFrame.h"
+#include "CQueryFrame.h"
 
 // ----------------------------------------------------------------------------
 // event tables
 // ----------------------------------------------------------------------------
 
 wxBEGIN_EVENT_TABLE ( CWMSFrame, wxFrame )
+EVT_SIZE ( CWMSFrame::OnSize )
+EVT_BUTTON ( wxWinID_LOGIN_OPEATOR, CWMSFrame::OnLogin )
 wxEND_EVENT_TABLE ( )
 
 CWMSFrame::CWMSFrame ( const wxChar *title ) : wxFrame( nullptr, wxID_ANY, title, wxDefaultPosition, wxSize ( WMS_FRAME_POS_X, WMS_FRAME_POS_Y ) )
@@ -26,12 +34,20 @@ CWMSFrame::CWMSFrame ( const wxChar *title ) : wxFrame( nullptr, wxID_ANY, title
 	CreateWMSMenuBar ( );
 
 	CreateWMSToolBar ( );
+
+	m_panel = new wxPanel ( this, wxID_ANY );
+
+	m_eFrameType = eLoginFrame;
+
+	m_opFrame = nullptr;
+
+	RecreateFrame ( );
 }
 
 
 CWMSFrame::~CWMSFrame ( )
 {
-
+	delete m_opFrame;
 }
 
 void CWMSFrame::CreateWMSMenuBar ( )
@@ -97,10 +113,7 @@ void CWMSFrame::PopulateToolbar ( )
 		Tool_inbound,
 		Tool_outbound,
 		Tool_stocktaking,
-		Tool_copy,
-		Tool_cut,
-		Tool_paste,
-		Tool_print,
+		Tool_find,
 		Tool_help,
 		Tool_Max
 	};
@@ -113,10 +126,7 @@ void CWMSFrame::PopulateToolbar ( )
 	INIT_TOOL_BMP ( inbound );
 	INIT_TOOL_BMP ( outbound );
 	INIT_TOOL_BMP ( stocktaking );
-	INIT_TOOL_BMP ( copy );
-	INIT_TOOL_BMP ( cut );
-	INIT_TOOL_BMP ( paste );
-	INIT_TOOL_BMP ( print );
+	INIT_TOOL_BMP ( find );
 	INIT_TOOL_BMP ( help );
 
 	int w = toolBarBitmaps[Tool_inbound].GetWidth ( ),
@@ -140,7 +150,7 @@ void CWMSFrame::PopulateToolbar ( )
 
 	toolBar->AddSeparator ( );
 
-	toolBar->AddTool ( wxID_INVENTORYQUERY, wxT ( "查询" ), toolBarBitmaps[Tool_copy], 
+	toolBar->AddTool ( wxID_INVENTORYQUERY, wxT ( "查询" ), toolBarBitmaps[Tool_find], 
 		wxT ( "查询库存信息" ), wxITEM_NORMAL );
 	
 	// add a stretchable space before the "Help" button to make it
@@ -151,4 +161,68 @@ void CWMSFrame::PopulateToolbar ( )
 	// after adding the buttons to the toolbar, must call Realize() to reflect
 	// the changes
 	toolBar->Realize ( );
+}
+
+void CWMSFrame::RecreateFrame ( )
+{
+	// wxLC_REPORT | wxLC_SINGLE_SEL
+	if ( nullptr != m_opFrame )
+	{
+		delete m_opFrame;
+	}
+
+	switch ( m_eFrameType )
+	{
+		case eLoginFrame:
+		{
+			m_opFrame = new CLoginFrame ( m_panel, this );
+		}
+		break;
+
+		case eInBoundFrame:
+		{
+			m_opFrame = new CInBoundFrame ( m_panel, this );
+		}
+		break;
+
+		case eOutBoundFrame:
+		{
+			m_opFrame = new COutBoundFrame ( m_panel, this );
+		}
+		break;
+
+		case eQueryFrame:
+		{
+			m_opFrame = new CQueryFrame ( m_panel, this );
+		}
+		break;
+
+		default:
+		{
+			
+		}
+		break;
+	}
+}
+
+void CWMSFrame::DoSize ( )
+{
+	if ( nullptr == m_opFrame )
+	{
+		return;
+	}
+
+	m_opFrame->DoSize ( GetClientSize ( ) );
+}
+
+void CWMSFrame::OnLogin ( wxCommandEvent& event )
+{
+	CLoginFrame *pFrame = static_cast< CLoginFrame * >(m_opFrame);
+	pFrame->OnLogin ( event );
+}
+
+void CWMSFrame::OnSize ( wxSizeEvent& event )
+{
+	DoSize ( );
+	event.Skip ( );
 }

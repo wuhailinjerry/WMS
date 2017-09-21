@@ -4,7 +4,7 @@ class CWMSApp : public wxApp
 {
 public:
 	CWMSApp();
-	~CWMSApp();
+	virtual ~CWMSApp();
 
 	virtual bool OnInit() wxOVERRIDE;
 

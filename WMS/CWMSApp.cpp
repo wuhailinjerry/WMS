@@ -32,6 +32,21 @@ bool CWMSApp::OnInit()
 		return false;
 	}
 
+	if ( false == InitGLog ( ) )
+	{
+		wxMessageBox ( "Init GLOG failed." );
+	}
+
+	/*CURLcode return_code = curl_global_init ( CURL_GLOBAL_ALL );
+	if ( CURLE_OK != return_code )
+	{
+		LOG ( ERROR ) << "curl_global_init failed with ReturnCode:" << return_code << ",Info:" << curl_easy_strerror ( return_code );
+	}*/
+
+#ifdef _DEBUG
+	LOG ( INFO ) << curl_version ( );
+#endif 
+
 	m_frame = new CWMSFrame( WMS_TITLE );
 
 	// Show the frame
