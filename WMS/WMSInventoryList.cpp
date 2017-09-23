@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "CWMSInventoryList.h"
+#include "WMSInventoryList.h"
 
 
-CWMSInventoryList::CWMSInventoryList ( wxWindow *parent,
+WMSInventoryList::WMSInventoryList ( wxWindow *parent,
 	const wxWindowID id,
 	const wxPoint& pos,
 	const wxSize& size,
@@ -13,12 +13,12 @@ CWMSInventoryList::CWMSInventoryList ( wxWindow *parent,
 }
 
 
-CWMSInventoryList::~CWMSInventoryList ( )
+WMSInventoryList::~WMSInventoryList ( )
 {
 
 }
 
-void CWMSInventoryList::InitList ( )
+void WMSInventoryList::InitList ( )
 {
 	// note that under MSW for SetColumnWidth() to work we need to create the
 	// items with images initially even if we specify dummy image id
@@ -92,12 +92,12 @@ void CWMSInventoryList::InitList ( )
 #endif
 }
 
-void CWMSInventoryList::DoSize ( wxSize size  )
+void WMSInventoryList::DoSize ( wxSize size  )
 {
 	SetSize ( 0, 0, size.x - 5, size.y - 5 );
 }
 
-void CWMSInventoryList::InsertItemInReportView ( int i )
+void WMSInventoryList::InsertItemInReportView ( int i )
 {
 	wxString buf;
 	buf.Printf ( wxT ( "This is item %d" ), i );

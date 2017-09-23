@@ -33,22 +33,22 @@
     <ClInclude Include="WMSDefine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CWMSInventoryList.h">
+    <ClInclude Include="WidgetsPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CInBoundFrame.h">
+    <ClInclude Include="LoginPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="COutBoundFrame.h">
+    <ClInclude Include="InBoundPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CBaseOperateFrame.h">
+    <ClInclude Include="OutBoundPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CLoginFrame.h">
+    <ClInclude Include="QueryPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CQueryFrame.h">
+    <ClInclude Include="WMSInventoryList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,22 +62,22 @@
     <ClCompile Include="CWMSFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CWMSInventoryList.cpp">
+    <ClCompile Include="WidgetsPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CInBoundFrame.cpp">
+    <ClCompile Include="LoginPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="COutBoundFrame.cpp">
+    <ClCompile Include="InBoundPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CBaseOperateFrame.cpp">
+    <ClCompile Include="OutBoundPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLoginFrame.cpp">
+    <ClCompile Include="QueryPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CQueryFrame.cpp">
+    <ClCompile Include="WMSInventoryList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

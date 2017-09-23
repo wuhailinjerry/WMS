@@ -29,11 +29,22 @@
 #include "wx/wx.h"
 // #endif
 
+#include "Resource/WMS.xpm"
+#include "Resource/login.xpm"
+#include "Resource/inbound.xpm"
+#include "Resource/outbound.xpm"
+#include "Resource/stocktaking.xpm"
+#include "Resource/find.xpm"
+#include "Resource/help.xpm"
+#include "Resource/bookctrl.xpm"
 
 #include "wx/listbase.h"
 #include "wx/listctrl.h"
 #include "wx/statline.h"
 #include "wx/spinctrl.h"
+#include "wx/bookctrl.h"
+#include "wx/treebook.h"
+#include "wx/persist.h"
 
 #include "wx/valgen.h"
 

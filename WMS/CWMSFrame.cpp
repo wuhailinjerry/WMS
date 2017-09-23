@@ -1,20 +1,20 @@
 #include "stdafx.h"
 #include "CWMSFrame.h"
 
-#include "CWMSInventoryList.h"
+#include "WMSInventoryList.h"
 
-#include "Resource/WMS.xpm"
+#include "LoginPage.h"
+#include "InBoundPage.h"
+#include "OutBoundPage.h"
+#include "QueryPage.h"
 
-#include "Resource/inbound.xpm"
-#include "Resource/outbound.xpm"
-#include "Resource/stocktaking.xpm"
-#include "Resource/find.xpm"
-#include "Resource/help.xpm"
-
-#include "CLoginFrame.h"
-#include "CInBoundFrame.h"
-#include "COutBoundFrame.h"
-#include "CQueryFrame.h"
+const wxChar *WidgetsCategories[eMaxPage] =
+{
+	wxT ( "登录操作" ),
+	wxT ( "库存操作" ),
+	wxT ( "管理员操作" ),
+	wxT ( "ALL" )
+};
 
 // ----------------------------------------------------------------------------
 // event tables
@@ -33,21 +33,129 @@ CWMSFrame::CWMSFrame ( const wxChar *title ) : wxFrame( nullptr, wxID_ANY, title
 
 	CreateWMSMenuBar ( );
 
-	CreateWMSToolBar ( );
+//	CreateWMSToolBar ( );
 
 	m_panel = new wxPanel ( this, wxID_ANY );
 
-	m_eFrameType = eLoginFrame;
+	wxSizer *sizerTop = new wxBoxSizer ( wxVERTICAL );
 
-	m_opFrame = nullptr;
+	// we have 2 panes: book with pages demonstrating the controls in the
+	// upper one and the log window with some buttons in the lower
 
-	RecreateFrame ( );
+	int style = wxBK_DEFAULT;
+	// Uncomment to suppress page theme (draw in solid colour)
+	//style |= wxNB_NOPAGETHEME;
+
+	m_book = new wxTreebook ( m_panel, wxWinID_BOOKCTRL, wxDefaultPosition, wxDefaultSize, style, "Widgets" );
+
+	InitBook ( );
+
+	sizerTop->Add ( m_book, 1, wxGROW | (wxALL & ~(wxTOP | wxBOTTOM)), 10 );
+//	sizerTop->Add ( 0, 5, 0, wxGROW ); // spacer in between
+
+	m_panel->SetSizer ( sizerTop );
+
+//	RecreateFrame ( );
 }
 
 
 CWMSFrame::~CWMSFrame ( )
 {
-	delete m_opFrame;
+	
+}
+
+// array of pages
+WX_DEFINE_ARRAY_PTR ( WidgetsPage *, ArrayWidgetsPage );
+
+void CWMSFrame::InitBook ( )
+{
+	wxImageList *imageList = new wxImageList ( ICON_SIZE, ICON_SIZE );
+
+	wxImage img ( bookctrl_xpm );
+	imageList->Add ( wxBitmap ( img.Scale ( ICON_SIZE, ICON_SIZE ) ) );
+
+	ArrayWidgetsPage pages[eMaxPage];
+	wxArrayString labels[eMaxPage];
+
+	wxMenu *menuPages = new wxMenu;
+	unsigned int nPage = 0, nFKey = 0;
+	int cat, imageId = 1;
+
+	// we need to first create all pages and only then add them to the book
+	// as we need the image list first
+	//
+	// we also construct the pages menu during this first iteration
+	for ( cat = 0; cat < eMaxPage; cat++ )
+	{
+		nPage++; // increase for parent page
+
+		for ( WidgetsPageInfo *info = WidgetsPage::ms_widgetPages; info; info = info->GetNext ( ) )
+		{
+			if ( (info->GetCategories ( ) & (1 << cat)) == 0 )
+				continue;
+
+			WidgetsPage *page = (*info->GetCtor ( ))( m_book, imageList);
+
+			pages[cat].Add ( page );
+
+			labels[cat].Add ( info->GetLabel ( ) );
+			if ( cat == eAllPage )
+			{
+				wxString radioLabel ( info->GetLabel ( ) );
+				nFKey++;
+				if ( nFKey <= 12 )
+				{
+					radioLabel << wxT ( "\tF" ) << nFKey;
+				}
+
+				menuPages->AppendRadioItem ( Widgets_GoToPage + nPage, radioLabel );
+			}
+
+			// consider only for treebook architecture (with subpages)
+			nPage++;
+		}
+	}
+
+	GetMenuBar ( )->Append ( menuPages, wxT ( "&Page" ) );
+
+	m_book->AssignImageList ( imageList );
+
+	for ( cat = 0; cat < eMaxPage; cat++ )
+	{
+		m_book->AddPage ( nullptr, WidgetsCategories[cat], false, 0 );
+
+
+		// now do add them
+		size_t count = pages[cat].GetCount ( );
+		for ( size_t n = 0; n < count; n++ )
+		{
+			m_book->AddSubPage
+			(
+				pages[cat][n],
+				labels[cat][n],
+				false, // don't select
+				imageId++
+			);
+		}
+	}
+
+	Connect ( wxID_ANY, wxEVT_TREEBOOK_PAGE_CHANGED, wxTreebookEventHandler ( CWMSFrame::OnPageChanged ) );
+
+	/*const bool pageSet = wxPersistentRegisterAndRestore ( m_book );
+
+	// for treebook page #0 is empty parent page only so select the first page
+	// with some contents
+	if ( !pageSet )
+	{
+		m_book->SetSelection ( 1 );
+	}
+*/
+
+	// but ensure that the top of the tree is shown nevertheless
+	wxTreeCtrl * const tree = m_book->GetTreeCtrl ( );
+
+	wxTreeItemIdValue cookie;
+	tree->EnsureVisible ( tree->GetFirstChild ( tree->GetRootItem ( ), cookie ) );
 }
 
 void CWMSFrame::CreateWMSMenuBar ( )
@@ -166,63 +274,86 @@ void CWMSFrame::PopulateToolbar ( )
 void CWMSFrame::RecreateFrame ( )
 {
 	// wxLC_REPORT | wxLC_SINGLE_SEL
-	if ( nullptr != m_opFrame )
+	/*if ( nullptr != m_opFrame )
 	{
 		delete m_opFrame;
 	}
 
 	switch ( m_eFrameType )
 	{
-		case eLoginFrame:
+		case eLoginPage:
 		{
-			m_opFrame = new CLoginFrame ( m_panel, this );
+			m_opFrame = new CLoginPage ( m_panel, this );
 		}
 		break;
 
-		case eInBoundFrame:
+		case eInBoundPage:
 		{
-			m_opFrame = new CInBoundFrame ( m_panel, this );
+			m_opFrame = new CInBoundPage ( m_panel, this );
 		}
 		break;
 
-		case eOutBoundFrame:
+		case eOutBoundPage:
 		{
-			m_opFrame = new COutBoundFrame ( m_panel, this );
+			m_opFrame = new COutBoundPage ( m_panel, this );
 		}
 		break;
 
-		case eQueryFrame:
+		case eQueryPage:
 		{
-			m_opFrame = new CQueryFrame ( m_panel, this );
+			m_opFrame = new CQueryPage ( m_panel, this );
 		}
 		break;
 
 		default:
 		{
-			
+			return;
 		}
 		break;
 	}
+
+	m_opFrame->CreateContent ( );
+	DoSize ( );*/
 }
 
 void CWMSFrame::DoSize ( )
 {
-	if ( nullptr == m_opFrame )
+	/*if ( nullptr == m_opFrame )
 	{
 		return;
 	}
 
-	m_opFrame->DoSize ( GetClientSize ( ) );
+	m_opFrame->DoSize ( GetClientSize ( ) );*/
 }
 
 void CWMSFrame::OnLogin ( wxCommandEvent& event )
 {
-	CLoginFrame *pFrame = static_cast< CLoginFrame * >(m_opFrame);
-	pFrame->OnLogin ( event );
+	/*CLoginPage *pFrame = static_cast< CLoginPage * >(m_opFrame);
+	
+	if ( pFrame->OnLogin ( event ) )
+	{
+	//	m_eFrameType = eInBoundFrame;
+		RecreateFrame ( );
+	}*/
 }
 
 void CWMSFrame::OnSize ( wxSizeEvent& event )
 {
 	DoSize ( );
 	event.Skip ( );
+}
+
+void CWMSFrame::OnPageChanging ( wxTreebookEvent& event )
+{
+
+}
+
+void CWMSFrame::OnPageChanged ( wxTreebookEvent& event )
+{
+
+}
+
+void CWMSFrame::OnGoToPage ( wxCommandEvent& event )
+{
+
 }

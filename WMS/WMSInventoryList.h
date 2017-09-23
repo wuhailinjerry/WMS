@@ -1,15 +1,15 @@
 #pragma once
 
-class CWMSInventoryList : public wxListCtrl
+class WMSInventoryList : public wxListCtrl
 {
 public:
-	CWMSInventoryList ( wxWindow *parent,
+	WMSInventoryList ( wxWindow *parent,
 		const wxWindowID id,
 		const wxPoint& pos,
 		const wxSize& size,
 		long style );
 
-	virtual ~CWMSInventoryList ( );
+	virtual ~WMSInventoryList ( );
 
 	void InitList ( );
 

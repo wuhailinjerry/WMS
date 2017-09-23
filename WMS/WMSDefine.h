@@ -6,6 +6,8 @@
 #define WMS_FRAME_POS_X 1280
 #define WMS_FRAME_POS_Y 720
 
+#define ICON_SIZE         16
+
 enum wxEventID
 {
 	wxID_LOGIN = 0,
@@ -24,18 +26,30 @@ enum wxEventID
 	wxID_EDITUSER,
 	wxID_DELETEUSER,
 
-
-	wxWinID_TOOLBAR = 500,
+	wxWinID_BOOKCTRL = 500,
+	wxWinID_TOOLBAR,
 	wxWinID_LISTINVENTORY,
 	wxWinID_LOGIN_NAME,
 	wxWinID_LOGIN_PWD,
-	wxWinID_LOGIN_OPEATOR
+	wxWinID_LOGIN_OPEATOR,
+
+	Widgets_GoToPage = 1000,
+	Widgets_GoToPageLast = Widgets_GoToPage + 100,
 };
 
-enum eFrameType
+enum ePageType
 {
-	eLoginFrame = 0,
-	eInBoundFrame,
-	eOutBoundFrame,
-	eQueryFrame,
+	eLOGINPage = 0,
+	eNormalPage,
+	eAdminPage,
+	eAllPage,
+	eMaxPage,
+};
+
+enum ePageCtrl
+{
+	LOGIN_CTRLS  = 1 << eLOGINPage,
+	NORMAL_CTRLS = 1 << eNormalPage,
+	ADMIN_CTRLS  = 1 << eAdminPage,
+	ALL_CTRLS    = 1 << eAllPage
 };
