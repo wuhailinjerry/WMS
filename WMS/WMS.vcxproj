@@ -96,7 +96,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\Common\wxWidgets\lib\vc_lib;..\..\Common\Output\$(ConfigurationName)_$(PlatformShortName)\Lib\;..\..\Common\third_party\Libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw31d_core.lib;wxbase31d.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexd.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;wininet.lib;version.lib;Comsupp.lib;Common.lib;libeay32.lib;ssleay32.lib;zdll.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31d_adv.lib;wxmsw31d_core.lib;wxbase31d.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexd.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;wininet.lib;version.lib;Comsupp.lib;Common.lib;libeay32.lib;ssleay32.lib;zdll.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\Common\wxWidgets\lib\vc_lib;..\..\Common\Output\$(ConfigurationName)_$(PlatformShortName)\Lib\;..\..\Common\third_party\Libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw31_core.lib;wxbase31.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregex.lib;wxexpat.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;wininet.lib;version.lib;Comsupp.lib;ws2_32.lib;wldap32.lib;Common.lib;libeay32.lib;ssleay32.lib;zdll.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31_adv.lib;wxmsw31_core.lib;wxbase31.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregex.lib;wxexpat.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;wininet.lib;version.lib;Comsupp.lib;ws2_32.lib;wldap32.lib;Common.lib;libeay32.lib;ssleay32.lib;zdll.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,6 +154,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InventoryGrid.h" />
     <ClInclude Include="WidgetsPage.h" />
     <ClInclude Include="InBoundPage.h" />
     <ClInclude Include="LoginPage.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="WMSDefine.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="InventoryGrid.cpp" />
     <ClCompile Include="WidgetsPage.cpp" />
     <ClCompile Include="InBoundPage.cpp" />
     <ClCompile Include="LoginPage.cpp" />

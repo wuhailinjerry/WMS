@@ -45,6 +45,8 @@
 #include "wx/bookctrl.h"
 #include "wx/treebook.h"
 #include "wx/persist.h"
+#include "wx/wupdlock.h"
+#include "wx/generic/grid.h"
 
 #include "wx/valgen.h"
 

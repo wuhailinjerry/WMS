@@ -39,7 +39,7 @@ enum wxEventID
 
 enum ePageType
 {
-	eLOGINPage = 0,
+	eLoginPage = 0,
 	eNormalPage,
 	eAdminPage,
 	eAllPage,
@@ -48,7 +48,7 @@ enum ePageType
 
 enum ePageCtrl
 {
-	LOGIN_CTRLS  = 1 << eLOGINPage,
+	LOGIN_CTRLS  = 1 << eLoginPage,
 	NORMAL_CTRLS = 1 << eNormalPage,
 	ADMIN_CTRLS  = 1 << eAdminPage,
 	ALL_CTRLS    = 1 << eAllPage

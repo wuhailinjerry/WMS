@@ -21,8 +21,11 @@ const wxChar *WidgetsCategories[eMaxPage] =
 // ----------------------------------------------------------------------------
 
 wxBEGIN_EVENT_TABLE ( CWMSFrame, wxFrame )
-EVT_SIZE ( CWMSFrame::OnSize )
-EVT_BUTTON ( wxWinID_LOGIN_OPEATOR, CWMSFrame::OnLogin )
+
+EVT_MENU ( wxID_EXIT, CWMSFrame::OnExit )
+
+EVT_TREEBOOK_PAGE_CHANGING ( wxID_ANY, CWMSFrame::OnPageChanging )
+
 wxEND_EVENT_TABLE ( )
 
 CWMSFrame::CWMSFrame ( const wxChar *title ) : wxFrame( nullptr, wxID_ANY, title, wxDefaultPosition, wxSize ( WMS_FRAME_POS_X, WMS_FRAME_POS_Y ) )
@@ -51,11 +54,8 @@ CWMSFrame::CWMSFrame ( const wxChar *title ) : wxFrame( nullptr, wxID_ANY, title
 	InitBook ( );
 
 	sizerTop->Add ( m_book, 1, wxGROW | (wxALL & ~(wxTOP | wxBOTTOM)), 10 );
-//	sizerTop->Add ( 0, 5, 0, wxGROW ); // spacer in between
 
 	m_panel->SetSizer ( sizerTop );
-
-//	RecreateFrame ( );
 }
 
 
@@ -107,16 +107,12 @@ void CWMSFrame::InitBook ( )
 				{
 					radioLabel << wxT ( "\tF" ) << nFKey;
 				}
-
-				menuPages->AppendRadioItem ( Widgets_GoToPage + nPage, radioLabel );
 			}
 
 			// consider only for treebook architecture (with subpages)
 			nPage++;
 		}
 	}
-
-	GetMenuBar ( )->Append ( menuPages, wxT ( "&Page" ) );
 
 	m_book->AssignImageList ( imageList );
 
@@ -141,15 +137,7 @@ void CWMSFrame::InitBook ( )
 
 	Connect ( wxID_ANY, wxEVT_TREEBOOK_PAGE_CHANGED, wxTreebookEventHandler ( CWMSFrame::OnPageChanged ) );
 
-	/*const bool pageSet = wxPersistentRegisterAndRestore ( m_book );
-
-	// for treebook page #0 is empty parent page only so select the first page
-	// with some contents
-	if ( !pageSet )
-	{
-		m_book->SetSelection ( 1 );
-	}
-*/
+	m_book->SetSelection ( 1 );
 
 	// but ensure that the top of the tree is shown nevertheless
 	wxTreeCtrl * const tree = m_book->GetTreeCtrl ( );
@@ -271,89 +259,66 @@ void CWMSFrame::PopulateToolbar ( )
 	toolBar->Realize ( );
 }
 
-void CWMSFrame::RecreateFrame ( )
+void CWMSFrame::OnExit ( wxCommandEvent& event )
 {
-	// wxLC_REPORT | wxLC_SINGLE_SEL
-	/*if ( nullptr != m_opFrame )
-	{
-		delete m_opFrame;
-	}
-
-	switch ( m_eFrameType )
-	{
-		case eLoginPage:
-		{
-			m_opFrame = new CLoginPage ( m_panel, this );
-		}
-		break;
-
-		case eInBoundPage:
-		{
-			m_opFrame = new CInBoundPage ( m_panel, this );
-		}
-		break;
-
-		case eOutBoundPage:
-		{
-			m_opFrame = new COutBoundPage ( m_panel, this );
-		}
-		break;
-
-		case eQueryPage:
-		{
-			m_opFrame = new CQueryPage ( m_panel, this );
-		}
-		break;
-
-		default:
-		{
-			return;
-		}
-		break;
-	}
-
-	m_opFrame->CreateContent ( );
-	DoSize ( );*/
-}
-
-void CWMSFrame::DoSize ( )
-{
-	/*if ( nullptr == m_opFrame )
-	{
-		return;
-	}
-
-	m_opFrame->DoSize ( GetClientSize ( ) );*/
-}
-
-void CWMSFrame::OnLogin ( wxCommandEvent& event )
-{
-	/*CLoginPage *pFrame = static_cast< CLoginPage * >(m_opFrame);
-	
-	if ( pFrame->OnLogin ( event ) )
-	{
-	//	m_eFrameType = eInBoundFrame;
-		RecreateFrame ( );
-	}*/
-}
-
-void CWMSFrame::OnSize ( wxSizeEvent& event )
-{
-	DoSize ( );
-	event.Skip ( );
+	Close ( );
 }
 
 void CWMSFrame::OnPageChanging ( wxTreebookEvent& event )
 {
-
+	if ( !m_book->GetPage ( event.GetSelection ( ) ) )
+	{
+		event.Veto ( );
+	}
 }
 
 void CWMSFrame::OnPageChanged ( wxTreebookEvent& event )
 {
+	const int sel = event.GetSelection ( );
 
+	// adjust "Page" menu selection
+	wxMenuItem *item = GetMenuBar ( )->FindItem ( Widgets_GoToPage + sel );
+	if ( item )
+	{
+		item->Check ( );
+	}
+
+	// create the pages on demand, otherwise the sample startup is too slow as
+	// it creates hundreds of controls
+	WidgetsPage *curPage = CurrentPage ( );
+	if ( curPage->GetChildren ( ).empty ( ) )
+	{
+		wxWindowUpdateLocker noUpdates ( curPage );
+		curPage->CreateContent ( );
+		//curPage->Layout();
+		curPage->GetSizer ( )->Fit ( curPage );
+
+		wxTreebook *book = wxStaticCast ( curPage->GetParent ( ), wxTreebook );
+		wxSize size;
+		for ( size_t i = 0; i < book->GetPageCount ( ); ++i )
+		{
+			wxWindow *page = book->GetPage ( i );
+			if ( page )
+			{
+				size.IncTo ( page->GetSize ( ) );
+			}
+		}
+		curPage->SetSize ( size );
+	}
+	// re-apply the attributes to the widget(s)
+	curPage->SetUpWidget ( );
+
+	event.Skip ( );
 }
 
 void CWMSFrame::OnGoToPage ( wxCommandEvent& event )
 {
+	m_book->SetSelection ( event.GetId ( ) - Widgets_GoToPage );
+}
 
+WidgetsPage * CWMSFrame::CurrentPage ( )
+{
+	wxWindow *page = m_book->GetCurrentPage ( );
+
+	return wxStaticCast ( page, WidgetsPage );
 }

@@ -85,9 +85,6 @@ void WidgetsPage::SetUpWidget ( )
 	{
 		wxCHECK_RET ( *it, "NULL widget" );
 
-#if wxUSE_TOOLTIPS
-		( *it )->SetToolTip ( GetAttrs ( ).m_tooltip );
-#endif // wxUSE_TOOLTIPS
 #if wxUSE_FONTDLG
 		if ( GetAttrs ( ).m_font.IsOk ( ) )
 		{

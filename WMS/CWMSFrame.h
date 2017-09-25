@@ -10,19 +10,17 @@ public:
 	void CreateWMSMenuBar ( );
 	void CreateWMSToolBar ( );
 	void PopulateToolbar ( );
-	void RecreateFrame ( );
-
-	void DoSize ( );
-
-	void OnLogin ( wxCommandEvent& event );
 
 protected:
 	void InitBook ( );
-	void OnSize ( wxSizeEvent& event );
+
+	void OnExit ( wxCommandEvent& event );
 
 	void OnPageChanging ( wxTreebookEvent& event );
 	void OnPageChanged ( wxTreebookEvent& event );
 	void OnGoToPage ( wxCommandEvent& event );
+
+	WidgetsPage *CurrentPage ( );
 
 private:
 	wxPanel *m_panel;

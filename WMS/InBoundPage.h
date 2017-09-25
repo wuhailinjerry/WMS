@@ -11,7 +11,7 @@ public:
 
 	virtual wxWindow *GetWidget ( ) const wxOVERRIDE
 	{
-		return nullptr;
+		return m_InBoundButton;
 	}
 
 	virtual void RecreateWidget ( ) wxOVERRIDE;
@@ -20,7 +20,8 @@ public:
 	virtual void CreateContent ( ) wxOVERRIDE;
 
 private:
-	WMSInventoryList *m_InventoryCtrl;
+	wxButton *m_InBoundButton;
+	wxGrid *m_InventoryGrid;
 
 private:
 	wxDECLARE_EVENT_TABLE ( );

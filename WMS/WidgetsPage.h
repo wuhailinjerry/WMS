@@ -7,9 +7,6 @@ struct WidgetAttributes
 {
 	WidgetAttributes ( )
 	{
-#if wxUSE_TOOLTIPS
-		m_tooltip = "This is a tooltip";
-#endif // wxUSE_TOOLTIPS
 		m_enabled = true;
 		m_show = true;
 		m_dir = wxLayout_LeftToRight;
@@ -18,9 +15,6 @@ struct WidgetAttributes
 		m_defaultFlags = wxBORDER_DEFAULT;
 	}
 
-#if wxUSE_TOOLTIPS
-	wxString m_tooltip;
-#endif // wxUSE_TOOLTIPS
 #if wxUSE_FONTDLG
 	wxFont m_font;
 #endif // wxUSE_FONTDLG
