@@ -8,8 +8,6 @@ public:
 	virtual ~CWMSFrame();
 
 	void CreateWMSMenuBar ( );
-	void CreateWMSToolBar ( );
-	void PopulateToolbar ( );
 
 protected:
 	void InitBook ( );

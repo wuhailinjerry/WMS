@@ -2,7 +2,6 @@
 
 #include "WidgetsPage.h"
 
-class WMSInventoryList;
 class InBoundPage : public WidgetsPage
 {
 public:

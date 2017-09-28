@@ -15,13 +15,6 @@ QueryPage::~QueryPage ( )
 {
 }
 
-/*
-void QueryPage::DoSize ( wxSize size )
-{
-
-}
-*/
-
 void QueryPage::RecreateWidget ( )
 {
 

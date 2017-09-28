@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "InBoundPage.h"
 
-#include "InventoryGrid.h"
+#include "InBoundGrid.h"
 
 wxBEGIN_EVENT_TABLE ( InBoundPage, WidgetsPage )
 wxEND_EVENT_TABLE ( )
@@ -31,14 +31,16 @@ void InBoundPage::CreateContent ( )
 
 	m_InventoryGrid = new wxGrid ( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-	wxGridTableBase *m_table = new InventoryGrid();
+	wxGridTableBase *m_table = new InBoundGrid();
 
 	m_InventoryGrid->SetTable ( m_table, true, wxGrid::wxGridSelectRows );
-
 	m_InventoryGrid->EnableDragColMove ( );
 	m_InventoryGrid->UseNativeColHeader ( );
 	m_InventoryGrid->HideRowLabels ( );
 	m_InventoryGrid->SetRowLabelSize ( wxGRID_AUTOSIZE );
+
+	m_InventoryGrid->SetColSize ( eSupplier, SUPPLIER_COLSIZE );
+	m_InventoryGrid->SetColLabelAlignment ( wxALIGN_CENTRE, wxALIGN_CENTRE );
 
 	topSizer->Add ( m_InventoryGrid, 1, wxEXPAND );
 

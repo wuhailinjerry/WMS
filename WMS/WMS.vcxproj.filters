@@ -42,16 +42,22 @@
     <ClInclude Include="InBoundPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OutBoundPage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="QueryPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WMSInventoryList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InventoryGrid.h">
+    <ClInclude Include="WMSConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StocktakingPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InBoundGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StocktakingGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,16 +80,22 @@
     <ClCompile Include="InBoundPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OutBoundPage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QueryPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WMSInventoryList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InventoryGrid.cpp">
+    <ClCompile Include="WMSConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StocktakingPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InBoundGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StocktakingGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

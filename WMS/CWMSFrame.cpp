@@ -5,7 +5,6 @@
 
 #include "LoginPage.h"
 #include "InBoundPage.h"
-#include "OutBoundPage.h"
 #include "QueryPage.h"
 
 const wxChar *WidgetsCategories[eMaxPage] =
@@ -24,6 +23,8 @@ wxBEGIN_EVENT_TABLE ( CWMSFrame, wxFrame )
 
 EVT_MENU ( wxID_EXIT, CWMSFrame::OnExit )
 
+EVT_MENU_RANGE ( wxID_GoToPage, wxID_GoToPageLast, CWMSFrame::OnGoToPage )
+
 EVT_TREEBOOK_PAGE_CHANGING ( wxID_ANY, CWMSFrame::OnPageChanging )
 
 wxEND_EVENT_TABLE ( )
@@ -35,8 +36,6 @@ CWMSFrame::CWMSFrame ( const wxChar *title ) : wxFrame( nullptr, wxID_ANY, title
 	CreateStatusBar ( );
 
 	CreateWMSMenuBar ( );
-
-//	CreateWMSToolBar ( );
 
 	m_panel = new wxPanel ( this, wxID_ANY );
 
@@ -160,7 +159,6 @@ void CWMSFrame::CreateWMSMenuBar ( )
 	// 2.仓库操作
 	wxMenu *operatorMenu = new wxMenu ( );
 	operatorMenu->Append ( wxID_INBOUND, wxT ( "&入库\tAlt-R" ), wxT ( "物品入库" ) );
-	operatorMenu->Append ( wxID_OUTBOUND, wxT ( "&出库\tAlt-C" ), wxT ( "物品出库" ) );
 	operatorMenu->Append ( wxID_STOCKTAKING, wxT ( "&盘点\tAlt-P" ), wxT ( "物品盘点" ) );
 	menuBar->Append ( operatorMenu, wxT ( "仓库操作" ) );
 
@@ -190,75 +188,6 @@ void CWMSFrame::CreateWMSMenuBar ( )
 	SetMenuBar ( menuBar );
 }
 
-void CWMSFrame::CreateWMSToolBar ( )
-{
-	long style = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT | wxTB_VERTICAL | wxTB_LEFT;
-
-	auto toolBar = CreateToolBar ( style, wxWinID_TOOLBAR );
-
-	PopulateToolbar ( );
-}
-
-void CWMSFrame::PopulateToolbar ( )
-{
-	auto *toolBar = GetToolBar ( );
-
-	// Set up toolbar
-	enum
-	{
-		Tool_inbound,
-		Tool_outbound,
-		Tool_stocktaking,
-		Tool_find,
-		Tool_help,
-		Tool_Max
-	};
-
-	wxBitmap toolBarBitmaps[Tool_Max];
-
-#define INIT_TOOL_BMP(bmp) \
-        toolBarBitmaps[Tool_##bmp] = wxBitmap(bmp##_xpm)
-
-	INIT_TOOL_BMP ( inbound );
-	INIT_TOOL_BMP ( outbound );
-	INIT_TOOL_BMP ( stocktaking );
-	INIT_TOOL_BMP ( find );
-	INIT_TOOL_BMP ( help );
-
-	int w = toolBarBitmaps[Tool_inbound].GetWidth ( ),
-		h = toolBarBitmaps[Tool_inbound].GetHeight ( );
-
-	// this call is actually unnecessary as the toolbar will adjust its tools
-	// size to fit the biggest icon used anyhow but it doesn't hurt neither
-	toolBar->SetToolBitmapSize ( wxSize ( w, h ) );
-
-	toolBar->AddTool ( wxID_INBOUND, wxT ( "入库" ),
-		toolBarBitmaps[Tool_inbound], wxNullBitmap, wxITEM_NORMAL,
-		wxT ( "物品入库" ) );
-
-	toolBar->AddTool ( wxID_OUTBOUND, wxT ( "出库" ),
-		toolBarBitmaps[Tool_outbound], wxNullBitmap, wxITEM_NORMAL,
-		wxT ( "物品出库" ) );
-
-	toolBar->AddTool ( wxID_STOCKTAKING, wxT ( "盘点" ), 
-		toolBarBitmaps[Tool_stocktaking], wxNullBitmap, wxITEM_NORMAL,
-		wxT ( "盘点店内信息" ) );
-
-	toolBar->AddSeparator ( );
-
-	toolBar->AddTool ( wxID_INVENTORYQUERY, wxT ( "查询" ), toolBarBitmaps[Tool_find], 
-		wxT ( "查询库存信息" ), wxITEM_NORMAL );
-	
-	// add a stretchable space before the "Help" button to make it
-	// right-aligned
-	toolBar->AddStretchableSpace ( );
-	toolBar->AddTool ( wxID_HELP, wxT ( "Help" ), toolBarBitmaps[Tool_help], wxT ( "Help button" ), wxITEM_CHECK );
-
-	// after adding the buttons to the toolbar, must call Realize() to reflect
-	// the changes
-	toolBar->Realize ( );
-}
-
 void CWMSFrame::OnExit ( wxCommandEvent& event )
 {
 	Close ( );
@@ -277,10 +206,10 @@ void CWMSFrame::OnPageChanged ( wxTreebookEvent& event )
 	const int sel = event.GetSelection ( );
 
 	// adjust "Page" menu selection
-	wxMenuItem *item = GetMenuBar ( )->FindItem ( Widgets_GoToPage + sel );
+	wxMenuItem *item = GetMenuBar ( )->FindItem ( wxID_GoToPage + sel );
 	if ( item )
 	{
-		item->Check ( );
+	//	item->Check ( );
 	}
 
 	// create the pages on demand, otherwise the sample startup is too slow as
@@ -313,7 +242,8 @@ void CWMSFrame::OnPageChanged ( wxTreebookEvent& event )
 
 void CWMSFrame::OnGoToPage ( wxCommandEvent& event )
 {
-	m_book->SetSelection ( event.GetId ( ) - Widgets_GoToPage );
+	auto id = event.GetId ( );
+	m_book->SetSelection ( event.GetId ( ) - wxID_GoToPage + 1 );
 }
 
 WidgetsPage * CWMSFrame::CurrentPage ( )

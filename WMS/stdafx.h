@@ -67,3 +67,7 @@
 #include "StringProcess.h"
 #include "curl/curl.h"
 #include "json/json.h"
+
+#include <map>
+
+using namespace std;

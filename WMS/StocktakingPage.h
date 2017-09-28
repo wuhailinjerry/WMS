@@ -1,15 +1,14 @@
 #pragma once
 #include "WidgetsPage.h"
-class OutBoundPage :
-	public WidgetsPage
+class StocktakingPage : public WidgetsPage
 {
 public:
-	OutBoundPage ( wxTreebook *book, wxImageList *imaglist );
-	virtual ~OutBoundPage ( );
+	StocktakingPage ( wxTreebook *book, wxImageList *imaglist );
+	~StocktakingPage ( );
 
 	virtual wxWindow *GetWidget ( ) const wxOVERRIDE
 	{
-		return nullptr;
+		return m_StocktakingButton;
 	}
 
 	virtual void RecreateWidget ( ) wxOVERRIDE;
@@ -18,7 +17,11 @@ public:
 	virtual void CreateContent ( ) wxOVERRIDE;
 
 private:
+	wxButton *m_StocktakingButton;
+	wxGrid *m_StocktakingGrid;
+
+private:
 	wxDECLARE_EVENT_TABLE ( );
-	DECLARE_WIDGETS_PAGE ( OutBoundPage )
+	DECLARE_WIDGETS_PAGE ( StocktakingPage )
 };
 

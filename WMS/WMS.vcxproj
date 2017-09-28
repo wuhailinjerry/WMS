@@ -154,28 +154,32 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InventoryGrid.h" />
+    <ClInclude Include="InBoundGrid.h" />
+    <ClInclude Include="StocktakingGrid.h" />
+    <ClInclude Include="StocktakingPage.h" />
     <ClInclude Include="WidgetsPage.h" />
     <ClInclude Include="InBoundPage.h" />
     <ClInclude Include="LoginPage.h" />
-    <ClInclude Include="OutBoundPage.h" />
     <ClInclude Include="QueryPage.h" />
     <ClInclude Include="CWMSApp.h" />
     <ClInclude Include="CWMSFrame.h" />
+    <ClInclude Include="WMSConfig.h" />
     <ClInclude Include="WMSInventoryList.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WMSDefine.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InventoryGrid.cpp" />
+    <ClCompile Include="InBoundGrid.cpp" />
+    <ClCompile Include="StocktakingGrid.cpp" />
+    <ClCompile Include="StocktakingPage.cpp" />
     <ClCompile Include="WidgetsPage.cpp" />
     <ClCompile Include="InBoundPage.cpp" />
     <ClCompile Include="LoginPage.cpp" />
-    <ClCompile Include="OutBoundPage.cpp" />
     <ClCompile Include="QueryPage.cpp" />
     <ClCompile Include="CWMSApp.cpp" />
     <ClCompile Include="CWMSFrame.cpp" />
+    <ClCompile Include="WMSConfig.cpp" />
     <ClCompile Include="WMSInventoryList.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
